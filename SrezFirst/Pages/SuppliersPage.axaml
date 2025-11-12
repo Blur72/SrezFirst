@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SrezFirst.SuppliersPage"
+             FontFamily="Comic Sans MS">
+    <Grid>
+        <StackPanel Margin="10">
+            <!-- Header -->
+            <Border Background="#ABCFCE" Height="60" Width="800" Margin="0,0,0,10">
+                <TextBlock Text="Suppliers Management" FontSize="16" FontWeight="Bold" 
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+
+            <!-- Buttons -->
+            <Button Content="Add Supplier" Name="addSupplier" Click="addSupplier_Click" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+            
+            <!-- DataGrid -->
+            <DataGrid Name="dgSuppliers" AutoGenerateColumns="False" HorizontalAlignment="Center">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="auto"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding SupplierType.Name}" Width="auto"/>
+                    <DataGridTextColumn Header="INN" Binding="{Binding Inn}" Width="auto"/>
+                    <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" Width="auto"/>
+                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate}" Width="auto"/>
+                    <DataGridTemplateColumn Header="Actions" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Name="btnEdit" Content="Edit" Margin="2" Tag="{Binding}" Click="btnEdit_Click"/>
+                                    <Button Name="btnDelete" Content="Delete" Margin="2" Tag="{Binding}" Click="btnDelete_Click"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>
