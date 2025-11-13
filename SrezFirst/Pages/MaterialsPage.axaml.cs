@@ -22,7 +22,7 @@ namespace SrezFirst
                 .ToList()
                 .Select(m => new
                 {
-                    m.Id, // Важно: сохраняем ID
+                    m.Id, 
                     m.Name,
                     MaterialTypeName = m.MaterialType?.Name ?? "None",
                     m.UnitPrice,

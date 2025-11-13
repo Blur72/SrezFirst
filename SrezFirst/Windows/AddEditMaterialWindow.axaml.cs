@@ -43,7 +43,6 @@ namespace SrezFirst
 
         private void btnSave_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            // Обновляем данные из полей
             currentMaterial.Name = nameMaterial.Text!;
             currentMaterial.UnitPrice = decimal.Parse(priceMaterial.Text);
             currentMaterial.QuantityInStock = decimal.Parse(stockMaterial.Text);
@@ -51,14 +50,12 @@ namespace SrezFirst
             currentMaterial.QuantityInPackage = int.Parse(packageMaterial.Text);
             currentMaterial.UnitOfMeasure = unitMaterial.Text!;
 
-            // Устанавливаем тип материала
             if (typeMaterial.SelectedItem is MaterialType selectedType)
             {
                 currentMaterial.MaterialTypeId = selectedType.Id;
             }
 
-            // Сохраняем
-            if (currentMaterial.Id == 0) // Новый материал
+            if (currentMaterial.Id == 0) 
             {
                 App.dbContext.Materials.Add(currentMaterial);
             }
