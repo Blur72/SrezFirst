@@ -61,14 +61,11 @@ namespace SrezFirst
 
         private async void btnEdit_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            // Получаем анонимный объект из Tag
             var anonymousObject = (sender as Button).Tag;
 
-            // Получаем ID из анонимного объекта
             var idProperty = anonymousObject.GetType().GetProperty("Id");
             var id = (int)idProperty.GetValue(anonymousObject);
 
-            // Находим материал по ID в БД
             var material = App.dbContext.Materials
                 .Include(m => m.MaterialType)
                 .FirstOrDefault(m => m.Id == id);
