@@ -15,17 +15,52 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="#ABCFCE">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Name="btnMaterials" Content="📦 Materials" Click="btnMaterials_Click" 
-                        Margin="20,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
-                        Background="#546F94" Foreground="White" BorderThickness="0"/>
-                <Button Name="btnSuppliers" Content="🏢 Suppliers" Click="btnSuppliers_Click" 
-                        Margin="20,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
-                        Background="#546F94" Foreground="White" BorderThickness="0"/>
-                <Button Name="btnCalculation" Content="🧮 Calculation" Click="btnCalculation_Click" 
-                        Margin="20,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
-                        Background="#546F94" Foreground="White" BorderThickness="0"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Иконка приложения слева -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,0,0">
+                    <Image Source="/Assets/Maze.png" 
+                           Width="60" 
+                           Height="60" 
+                           VerticalAlignment="Center"/>
+                    <TextBlock Text="Mosaic" 
+                              VerticalAlignment="Center" 
+                              Margin="10,0,0,0"
+                              FontSize="20" 
+                              FontWeight="Bold" 
+                              Foreground="#2C3E50"/>
+                </StackPanel>
+                
+                <!-- Навигационные кнопки по центру -->
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center">
+                    <Button Name="btnMaterials" Content="📦 Materials" Click="btnMaterials_Click" 
+                            Margin="10,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
+                            Background="#546F94" Foreground="White" BorderThickness="0"/>
+                    <Button Name="btnSuppliers" Content="🏢 Suppliers" Click="btnSuppliers_Click" 
+                            Margin="10,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
+                            Background="#546F94" Foreground="White" BorderThickness="0"/>
+                    <Button Name="btnCalculation" Content="🧮 Calculation" Click="btnCalculation_Click" 
+                            Margin="10,0,0,0" Padding="20,10" FontSize="14" FontWeight="Bold"
+                            Background="#546F94" Foreground="White" BorderThickness="0"/>
+                </StackPanel>
+                
+                <!-- Можно добавить что-то справа, например, пользователя -->
+                <StackPanel Grid.Column="2" 
+                           Orientation="Horizontal" 
+                           HorizontalAlignment="Right" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,20,0">
+                    <!-- Здесь можно добавить информацию о пользователе или другие элементы -->
+                </StackPanel>
+            </Grid>
         </Border>
 
         <ContentControl Name="mainControl" Grid.Row="1"/>
