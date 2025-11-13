@@ -1,7 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using SrezFirst.Data;
+using System;
 using System.Linq;
 
 namespace SrezFirst
@@ -14,6 +17,7 @@ namespace SrezFirst
         {
             InitializeComponent();
             LoadTypes();
+            ClearErrors();
         }
 
         public AddEditMaterialWindow(Material material)
@@ -22,6 +26,7 @@ namespace SrezFirst
             this.currentMaterial = material;
             DataContext = this.currentMaterial;
             LoadTypes();
+            ClearErrors();
 
             if (material.MaterialTypeId.HasValue)
             {
@@ -36,32 +41,108 @@ namespace SrezFirst
             typeMaterial.ItemsSource = types;
         }
 
+        private void ClearErrors()
+        {
+            nameError.Content = "";
+            typeError.Content = "";
+            priceError.Content = "";
+            stockError.Content = "";
+            minQuantityError.Content = "";
+            packageError.Content = "";
+            unitError.Content = "";
+        }
+
         private void btnClose_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Close();
         }
 
-        private void btnSave_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void btnSave_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            currentMaterial.Name = nameMaterial.Text!;
-            currentMaterial.UnitPrice = decimal.Parse(priceMaterial.Text);
-            currentMaterial.QuantityInStock = decimal.Parse(stockMaterial.Text);
-            currentMaterial.MinimumQuantity = decimal.Parse(minQuantityMaterial.Text);
-            currentMaterial.QuantityInPackage = int.Parse(packageMaterial.Text);
-            currentMaterial.UnitOfMeasure = unitMaterial.Text!;
-
-            if (typeMaterial.SelectedItem is MaterialType selectedType)
+            try
             {
-                currentMaterial.MaterialTypeId = selectedType.Id;
-            }
+                ClearErrors();
+                bool isValid = true;
 
-            if (currentMaterial.Id == 0) 
+                if (string.IsNullOrWhiteSpace(nameMaterial.Text))
+                {
+                    nameError.Content = "Название материала не может быть пустым";
+                    isValid = false;
+                }
+
+                if (!decimal.TryParse(priceMaterial.Text, out decimal price) || price <= 0)
+                {
+                    priceError.Content = "Цена должна быть положительным числом";
+                    isValid = false;
+                }
+
+                if (!decimal.TryParse(stockMaterial.Text, out decimal stock) || stock < 0)
+                {
+                    stockError.Content = "Количество должно быть неотрицательным числом";
+                    isValid = false;
+                }
+
+                if (!decimal.TryParse(minQuantityMaterial.Text, out decimal minQuantity) || minQuantity <= 0)
+                {
+                    minQuantityError.Content = "Минимальное количество должно быть положительным числом";
+                    isValid = false;
+                }
+
+                if (!int.TryParse(packageMaterial.Text, out int package) || package <= 0)
+                {
+                    packageError.Content = "Количество в упаковке должно быть целым положительным числом";
+                    isValid = false;
+                }
+
+                if (string.IsNullOrWhiteSpace(unitMaterial.Text))
+                {
+                    unitError.Content = "Единица измерения не может быть пустой";
+                    isValid = false;
+                }
+
+                if (typeMaterial.SelectedItem == null)
+                {
+                    typeError.Content = "Необходимо выбрать тип материала";
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                currentMaterial.Name = nameMaterial.Text!;
+                currentMaterial.UnitPrice = price;
+                currentMaterial.QuantityInStock = stock;
+                currentMaterial.MinimumQuantity = minQuantity;
+                currentMaterial.QuantityInPackage = package;
+                currentMaterial.UnitOfMeasure = unitMaterial.Text!;
+
+                if (typeMaterial.SelectedItem is MaterialType selectedType)
+                {
+                    currentMaterial.MaterialTypeId = selectedType.Id;
+                }
+
+                if (currentMaterial.Id == 0)
+                {
+                    App.dbContext.Materials.Add(currentMaterial);
+                }
+
+                App.dbContext.SaveChanges();
+
+                var successBox = MessageBoxManager.GetMessageBoxStandard(
+                    title: "Успешно",
+                    text: currentMaterial.Id == 0 ? "Материал успешно добавлен" : "Материал успешно изменен",
+                    ButtonEnum.Ok);
+                await successBox.ShowAsync();
+
+                Close();
+            }
+            catch (Exception ex)
             {
-                App.dbContext.Materials.Add(currentMaterial);
+                var errorBox = MessageBoxManager.GetMessageBoxStandard(
+                    title: "Ошибка",
+                    text: $"Не удалось сохранить материал: {ex.Message}",
+                    ButtonEnum.Ok);
+                await errorBox.ShowAsync();
             }
-
-            App.dbContext.SaveChanges();
-            Close();
         }
     }
 }

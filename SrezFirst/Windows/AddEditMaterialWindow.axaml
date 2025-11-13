@@ -2,31 +2,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
         x:Class="SrezFirst.AddEditMaterialWindow"
         Title="AddEditMaterialWindow" FontFamily="Comic Sans MS">
     <Grid>
         <StackPanel Margin="20">
             <Label Content="Name"/>
             <TextBox Name="nameMaterial" Text="{Binding Name, Mode=TwoWay}"/>
+            <Label Name="nameError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Type"/>
             <ComboBox Name="typeMaterial" DisplayMemberBinding="{Binding Name}"/>
+            <Label Name="typeError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Price"/>
             <TextBox Name="priceMaterial" Text="{Binding UnitPrice, Mode=TwoWay}"/>
+            <Label Name="priceError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Quantity in Stock"/>
             <TextBox Name="stockMaterial" Text="{Binding QuantityInStock, Mode=TwoWay}"/>
+            <Label Name="stockError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Minimum Quantity"/>
             <TextBox Name="minQuantityMaterial" Text="{Binding MinimumQuantity, Mode=TwoWay}"/>
+            <Label Name="minQuantityError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Quantity in Package"/>
             <TextBox Name="packageMaterial" Text="{Binding QuantityInPackage, Mode=TwoWay}"/>
+            <Label Name="packageError" Foreground="Red" FontSize="10" Content=""/>
             
             <Label Content="Unit of Measure"/>
             <TextBox Name="unitMaterial" Text="{Binding UnitOfMeasure, Mode=TwoWay}"/>
+            <Label Name="unitError" Foreground="Red" FontSize="10" Content=""/>
 
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                 <Button Name="btnClose" Content="Close" Click="btnClose_Click"/>

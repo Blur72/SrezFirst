@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using SrezFirst.Data;
 using System.Linq;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace SrezFirst
 {
@@ -47,15 +49,34 @@ namespace SrezFirst
             }
         }
 
-        private void btnDelete_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void btnDelete_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var supplier = (sender as Button).Tag as Supplier;
 
             if (supplier != null)
             {
-                App.dbContext.Remove(supplier);
-                App.dbContext.SaveChanges();
-                Refresh();
+                var confirmBox = MessageBoxManager.GetMessageBoxStandard(
+                    title: "Подтверждение удаления",
+                    text: $"Вы уверены, что хотите удалить поставщика '{supplier.Name}'?",
+                    ButtonEnum.YesNo,
+                    Icon.Question);
+
+                var result = await confirmBox.ShowAsync();
+
+                if (result == ButtonResult.Yes)
+                {
+                    App.dbContext.Remove(supplier);
+                    App.dbContext.SaveChanges();
+
+                    var successBox = MessageBoxManager.GetMessageBoxStandard(
+                        title: "Успешно",
+                        text: "Поставщик успешно удален",
+                        ButtonEnum.Ok,
+                        Icon.Success);
+                    await successBox.ShowAsync();
+
+                    Refresh();
+                }
             }
         }
     }

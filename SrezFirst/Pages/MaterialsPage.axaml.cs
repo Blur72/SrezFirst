@@ -4,6 +4,8 @@ using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using SrezFirst.Data;
 using System.Linq;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace SrezFirst
 {
@@ -22,7 +24,7 @@ namespace SrezFirst
                 .ToList()
                 .Select(m => new
                 {
-                    m.Id, 
+                    m.Id,
                     m.Name,
                     MaterialTypeName = m.MaterialType?.Name ?? "None",
                     m.UnitPrice,
@@ -80,7 +82,7 @@ namespace SrezFirst
             }
         }
 
-        private void btnDelete_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private async void btnDelete_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var anonymousObject = (sender as Button).Tag;
             var idProperty = anonymousObject.GetType().GetProperty("Id");
@@ -90,9 +92,28 @@ namespace SrezFirst
 
             if (material != null)
             {
-                App.dbContext.Remove(material);
-                App.dbContext.SaveChanges();
-                Refresh();
+                var confirmBox = MessageBoxManager.GetMessageBoxStandard(
+                    title: "Подтверждение удаления",
+                    text: $"Вы уверены, что хотите удалить материал '{material.Name}'?",
+                    ButtonEnum.YesNo,
+                    Icon.Question);
+
+                var result = await confirmBox.ShowAsync();
+
+                if (result == ButtonResult.Yes)
+                {
+                    App.dbContext.Remove(material);
+                    App.dbContext.SaveChanges();
+
+                    var successBox = MessageBoxManager.GetMessageBoxStandard(
+                        title: "Успешно",
+                        text: "Материал успешно удален",
+                        ButtonEnum.Ok,
+                        Icon.Success);
+                    await successBox.ShowAsync();
+
+                    Refresh();
+                }
             }
         }
     }
