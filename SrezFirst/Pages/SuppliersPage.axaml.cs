@@ -79,5 +79,26 @@ namespace SrezFirst
                 }
             }
         }
+
+        private async void btnMaterials_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var anonymousObject = (sender as Button)?.Tag;
+            if (anonymousObject == null) return;
+
+            var idProperty = anonymousObject.GetType().GetProperty("Id");
+            var id = (int)idProperty.GetValue(anonymousObject);
+
+            var supplier = App.dbContext.Suppliers
+                .Include(s => s.MaterialSuppliers)
+                .ThenInclude(ms => ms.Material)
+                .FirstOrDefault(s => s.Id == id);
+
+            if (supplier != null)
+            {
+                var window = new SupplierDeliveriesWindow(supplier);
+                var parent = this.VisualRoot as Window;
+                await window.ShowDialog(parent);
+            }
+        }
     }
 }

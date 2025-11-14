@@ -21,7 +21,7 @@ public partial class Material
 
     public string UnitOfMeasure { get; set; } = null!;
 
-    public virtual MaterialType? MaterialType { get; set; }
+    public virtual ICollection<MaterialSupplier> MaterialSuppliers { get; set; } = new List<MaterialSupplier>();
 
-    public virtual ICollection<Supplier> Suppliers { get; set; } = new List<Supplier>();
+    public virtual MaterialType? MaterialType { get; set; }
 }

@@ -17,7 +17,7 @@ public partial class Supplier
 
     public int? SupplierTypeId { get; set; }
 
-    public virtual SupplierType? SupplierType { get; set; }
+    public virtual ICollection<MaterialSupplier> MaterialSuppliers { get; set; } = new List<MaterialSupplier>();
 
-    public virtual ICollection<Material> Materials { get; set; } = new List<Material>();
+    public virtual SupplierType? SupplierType { get; set; }
 }

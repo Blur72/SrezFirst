@@ -17,6 +17,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Material> Materials { get; set; }
 
+    public virtual DbSet<MaterialSupplier> MaterialSuppliers { get; set; }
+
     public virtual DbSet<MaterialType> MaterialTypes { get; set; }
 
     public virtual DbSet<ProductType> ProductTypes { get; set; }
@@ -59,25 +61,25 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.MaterialType).WithMany(p => p.Materials)
                 .HasForeignKey(d => d.MaterialTypeId)
                 .HasConstraintName("materials_material_type_id_fkey");
+        });
 
-            entity.HasMany(d => d.Suppliers).WithMany(p => p.Materials)
-                .UsingEntity<Dictionary<string, object>>(
-                    "MaterialSupplier",
-                    r => r.HasOne<Supplier>().WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("material_suppliers_supplier_id_fkey"),
-                    l => l.HasOne<Material>().WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("material_suppliers_material_id_fkey"),
-                    j =>
-                    {
-                        j.HasKey("MaterialId", "SupplierId").HasName("material_suppliers_pkey");
-                        j.ToTable("material_suppliers");
-                        j.IndexerProperty<int>("MaterialId").HasColumnName("material_id");
-                        j.IndexerProperty<int>("SupplierId").HasColumnName("supplier_id");
-                    });
+        modelBuilder.Entity<MaterialSupplier>(entity =>
+        {
+            entity.HasKey(e => new { e.MaterialId, e.SupplierId }).HasName("material_suppliers_pkey");
+
+            entity.ToTable("material_suppliers");
+
+            entity.Property(e => e.MaterialId).HasColumnName("material_id");
+            entity.Property(e => e.SupplierId).HasColumnName("supplier_id");
+            entity.Property(e => e.Empty).HasColumnName("empty");
+
+            entity.HasOne(d => d.Material).WithMany(p => p.MaterialSuppliers)
+                .HasForeignKey(d => d.MaterialId)
+                .HasConstraintName("material_suppliers_material_id_fkey");
+
+            entity.HasOne(d => d.Supplier).WithMany(p => p.MaterialSuppliers)
+                .HasForeignKey(d => d.SupplierId)
+                .HasConstraintName("material_suppliers_supplier_id_fkey");
         });
 
         modelBuilder.Entity<MaterialType>(entity =>

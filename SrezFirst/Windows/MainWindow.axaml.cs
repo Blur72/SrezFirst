@@ -10,8 +10,7 @@ namespace SrezFirst
         {
             InitializeComponent();
 
-            
-            mainControl.Content = new MaterialsPage();
+           
         }
 
         private void btnMaterials_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

@@ -25,6 +25,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <Button Name="btnMaterials" Content="Materials" Margin="2" Tag="{Binding}" Click="btnMaterials_Click"/> 
                                     <Button Name="btnEdit" Content="Edit" Margin="2" Tag="{Binding}" Click="btnEdit_Click"/>
                                     <Button Name="btnDelete" Content="Delete" Margin="2" Tag="{Binding}" Click="btnDelete_Click"/>
                                 </StackPanel>

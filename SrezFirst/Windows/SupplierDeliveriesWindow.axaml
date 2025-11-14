@@ -1,0 +1,42 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="SrezFirst.SupplierDeliveriesWindow"
+        Title="Поставки поставщика"
+        WindowState="Maximized">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Name="titleSupplier"
+                       Text="Поставки поставщика"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"/>
+            
+            <Button Content="✖️ Закрыть"
+                    HorizontalAlignment="Right"
+                    Background="{StaticResource AccentColor}"
+                    Foreground="White"
+                    Padding="10,5"
+                    DockPanel.Dock="Right"
+                    Click="Close_Click"/>
+        </DockPanel>
+        <DataGrid Name="dgDeliveries"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  BorderBrush="#d7d7d7"
+                  BorderThickness="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Материал" Binding="{Binding MaterialName}" Width="2*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
